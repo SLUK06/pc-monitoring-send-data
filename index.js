@@ -6,9 +6,13 @@ async function sendSystemInfo() {
     try {
         const data = await si.getAllData();
         const { main, cpu, graphics } = data;
+        //console.log(main.memClock);
+        si.cpuTemperature.then(cputmp => console.log(cputmp));
+        console.log(cpu.speed);
+        console.log(graphics.temperatureGpu);
 
         // Verificar se todas as propriedades existem antes de acessá-las
-        if (cpu.temperature && graphics.temperatureGpu && cpu.speed && main.memClock) {
+        if (cpu.temperature && graphics.temperatureGpu && cpu.speed /*&& main.memClock*/) {
             // Construir objeto com as informações
             const systemInfo = {
                 cpuTemp: cpu.temperature,
@@ -18,7 +22,7 @@ async function sendSystemInfo() {
             };
 
             // Enviar informações para o servidor
-            const response = await axios.post('http://seu-servidor.com/api/systeminfo', systemInfo);
+            const response = await axios.post('https://pc-monitoring-augmented-reality-production.up.railway.app/inserirDados', systemInfo);
 
             console.log('Informações enviadas com sucesso:', response.data);
         } else {
