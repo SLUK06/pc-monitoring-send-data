@@ -1,31 +1,31 @@
 const si = require('systeminformation');
 const axios = require('axios');
+const moment = require('moment')
 
 // Função para obter informações do sistema e enviar para o servidor
 async function sendSystemInfo() {
     try {
-        //const data = await si.getAllData();
-        //const { main, cpu, graphics } = data;
-        //console.log(main.memClock);
-        var cpuTemp = si.cpuTemperature();
+
+        const cpuTemp = await si.cpuTemperature();
+        const cpuSpeed = await si.cpuCurrentSpeed();
+        const gpu = await si.graphics();
+        const memory = await si.currentLoad();
+        
         console.log("CPU Temperatura    : " + cpuTemp.main);
-        //console.log(cpu.speed);
-        //console.log(graphics.temperatureGpu);
+        console.log("CPU Clock          : " + cpuSpeed.avg);
 
         // Verificar se todas as propriedades existem antes de acessá-las
-        if (cpuTemp && graphics.temperatureGpu && cpu.speed /*&& main.memClock*/) {
+        if (cpuTemp.main && gpu && cpuSpeed.avg) {
             // Construir objeto com as informações
             const systemInfo = {
-                cpuTemp: cpu.temperature,
-                gpuTemp: graphics.temperatureGpu,
-                cpuClock: cpu.speed,
-                memoryClock: main.memClock
+                cpuTemp: cpuTemp.main,
+                cpuClock: cpuSpeed.avg,
             };
 
             // Enviar informações para o servidor
             const response = await axios.post('https://pc-monitoring-augmented-reality-production.up.railway.app/inserirDados', systemInfo);
 
-            console.log('Informações enviadas com sucesso:', response.data);
+            console.log('Informações enviadas com sucesso:\n', response.data);
         } else {
             console.error('Algumas informações do sistema estão ausentes. Não foi possível enviar os dados.');
         }
