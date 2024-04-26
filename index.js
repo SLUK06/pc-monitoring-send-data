@@ -4,15 +4,16 @@ const axios = require('axios');
 // Função para obter informações do sistema e enviar para o servidor
 async function sendSystemInfo() {
     try {
-        const data = await si.getAllData();
-        const { main, cpu, graphics } = data;
+        //const data = await si.getAllData();
+        //const { main, cpu, graphics } = data;
         //console.log(main.memClock);
-        si.cpuTemperature.then(cputmp => console.log(cputmp));
-        console.log(cpu.speed);
-        console.log(graphics.temperatureGpu);
+        var cpuTemp = si.cpuTemperature();
+        console.log("CPU Temperatura    : " + cpuTemp.main);
+        //console.log(cpu.speed);
+        //console.log(graphics.temperatureGpu);
 
         // Verificar se todas as propriedades existem antes de acessá-las
-        if (cpu.temperature && graphics.temperatureGpu && cpu.speed /*&& main.memClock*/) {
+        if (cpuTemp && graphics.temperatureGpu && cpu.speed /*&& main.memClock*/) {
             // Construir objeto com as informações
             const systemInfo = {
                 cpuTemp: cpu.temperature,
