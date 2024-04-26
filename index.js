@@ -11,8 +11,8 @@ async function sendSystemInfo() {
         if (cpu.temperature && graphics.temperatureGpu && cpu.speed && main.memClock) {
             // Construir objeto com as informações
             const systemInfo = {
-                cpuTemperature: cpu.temperature,
-                gpuTemperature: graphics.temperatureGpu,
+                cpuTemp: cpu.temperature,
+                gpuTemp: graphics.temperatureGpu,
                 cpuClock: cpu.speed,
                 memoryClock: main.memClock
             };
